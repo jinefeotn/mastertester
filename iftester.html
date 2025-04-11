@@ -2,12 +2,11 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8">
-  <title>IF Koşulu Simülasyonu - Kompakt Tasarım</title>
+  <title>Koşul Yapıları Simülasyonu</title>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
-      background-color: #f5f5f5;
-      margin: 0;
+      background-color: #f2f2f2;
       padding: 40px 20px;
       display: flex;
       flex-direction: column;
@@ -15,16 +14,18 @@
     }
 
     h1 {
-      margin-bottom: 20px;
       color: #333;
+      margin-bottom: 30px;
     }
 
-    .wrapper {
+    .section {
       display: flex;
-      flex-direction: row;
-      gap: 30px;
       flex-wrap: wrap;
+      gap: 30px;
       justify-content: center;
+      max-width: 900px;
+      width: 100%;
+      margin-bottom: 40px;
     }
 
     .card {
@@ -58,10 +59,33 @@
       color: red;
     }
 
+    .input-group {
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .input-group input {
+      padding: 10px;
+      font-size: 16px;
+      width: 80px;
+      text-align: center;
+    }
+
+    .input-group button {
+      padding: 10px 20px;
+      margin-left: 10px;
+      background-color: #007BFF;
+      border: none;
+      color: white;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
     .toggle-container {
       display: flex;
       justify-content: center;
       margin-bottom: 20px;
+      gap: 10px;
     }
 
     .switch {
@@ -108,99 +132,283 @@
     }
 
     .lamp {
-      width: 50px;
-      height: 50px;
+      width: 60px;
+      height: 60px;
       border-radius: 50%;
-      margin: 10px auto;
+      margin: 20px auto;
       background-color: #333;
       box-shadow: inset 0 0 10px #111;
       transition: all 0.3s ease;
     }
 
-    .lamp.on {
-      background-color: #00ff00;
-      box-shadow: 0 0 15px #00ff00, inset 0 0 10px #00aa00;
-    }
+    .mavi { background-color: #00bfff; box-shadow: 0 0 15px #00bfff; }
+    .sari { background-color: #ffcc00; box-shadow: 0 0 15px #ffcc00; }
+    .kirmizi { background-color: #ff4444; box-shadow: 0 0 15px #ff4444; }
+    .yesil { background-color: #00ff00; box-shadow: 0 0 15px #00ff00; }
 
     .status {
       text-align: center;
       font-weight: bold;
-      margin-top: 10px;
       color: #444;
+      margin-top: 10px;
     }
-
-    @media(max-width: 700px) {
-      .wrapper {
-        flex-direction: column;
-        align-items: center;
-      }
-    }
-
   </style>
 </head>
 <body>
 
-  <h1>IF Koşulu Simülasyonu</h1>
+  <h1>Koşul Yapıları Simülasyonu</h1>
 
-  <div class="wrapper">
-    
-    <!-- Kod Kutusu -->
+  <!-- 1. Simülasyon - Basit IF Yapısı (Butonlu) -->
+  <div class="section">
     <div class="card code-box">
       <div class="code-line" id="line1">IF buton == TRUE THEN</div>
-      <div class="code-line" id="line2"> lamba := YANIK;</div>
+      <div class="code-line" id="line2"> lamba := YEŞİL;</div>
       <div class="code-line" id="line3">ELSE</div>
-      <div class="code-line" id="line4"> lamba := SÖNÜK;</div>
+      <div class="code-line" id="line4"> lamba := KIRMIZI;</div>
       <div class="code-line" id="line5">END_IF;</div>
     </div>
-
-    <!-- Test Paneli Kutusu -->
     <div class="card">
       <div class="toggle-container">
-        <label class="switch">
-          <input type="checkbox" id="toggleBtn" onclick="toggleButton()">
-          <span class="slider"></span>
-        </label>
+        <div>
+          <label>Buton</label><br>
+          <label class="switch">
+            <input type="checkbox" id="btn1" onclick="runSim1()">
+            <span class="slider"></span>
+          </label>
+        </div>
       </div>
-
-      <div class="lamp" id="lamp"></div>
-
-      <div class="status">
-        Buton Durumu: <span id="buttonState">FALSE</span>
-      </div>
+      <div class="lamp" id="lamp1"></div>
+      <div class="status" id="status1">Durum: KIRMIZI</div>
     </div>
+  </div>
 
+  <!-- 2. Simülasyon - İç İçe IF Yapısı (Butonlu) -->
+  <div class="section">
+    <div class="card code-box">
+      <div class="code-line" id="line11">IF buton == TRUE THEN</div>
+      <div class="code-line" id="line12"> IF sistem == TRUE THEN</div>
+      <div class="code-line" id="line13">  lamba := YEŞİL;</div>
+      <div class="code-line" id="line14"> ELSE</div>
+      <div class="code-line" id="line15">  lamba := SARI;</div>
+      <div class="code-line" id="line16"> END_IF;</div>
+      <div class="code-line" id="line17">ELSE</div>
+      <div class="code-line" id="line18"> lamba := KIRMIZI;</div>
+      <div class="code-line" id="line19">END_IF;</div>
+    </div>
+    <div class="card">
+      <div class="toggle-container">
+        <div>
+          <label>Buton</label><br>
+          <label class="switch">
+            <input type="checkbox" id="btn2" onclick="runSim2()">
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div>
+          <label>Sistem</label><br>
+          <label class="switch">
+            <input type="checkbox" id="sys2" onclick="runSim2()">
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+      <div class="lamp" id="lamp2"></div>
+      <div class="status" id="status2">Durum: KIRMIZI</div>
+    </div>
+  </div>
+
+  <!-- 3. Simülasyon - IF - ELSE IF - ELSE Yapısı (Sıcaklık) -->
+  <div class="section">
+    <div class="card code-box">
+      <div class="code-line" id="line21">IF sıcaklık < 30 THEN</div>
+      <div class="code-line" id="line22"> lamba := MAVİ;</div>
+      <div class="code-line" id="line23">ELSE IF sıcaklık < 70 THEN</div>
+      <div class="code-line" id="line24"> lamba := SARI;</div>
+      <div class="code-line" id="line25">ELSE</div>
+      <div class="code-line" id="line26"> lamba := KIRMIZI;</div>
+      <div class="code-line" id="line27">END_IF;</div>
+    </div>
+    <div class="card">
+      <div class="input-group">
+        <label>Sıcaklık (0-100):</label><br>
+        <input type="number" id="tempInput3" min="0" max="100" value="25">
+        <button onclick="checkTemp3()">Uygula</button>
+      </div>
+      <div class="lamp" id="lamp3"></div>
+      <div class="status" id="status3">Durum: MAVİ</div>
+    </div>
+  </div>
+
+  <!-- 4. Simülasyon - IF İçerisinde IF Yapısı (Sıcaklık ve Nem) -->
+  <div class="section">
+    <div class="card code-box">
+      <div class="code-line" id="line31">IF sıcaklık < 30 THEN</div>
+      <div class="code-line" id="line32"> IF nem < 60 THEN</div>
+      <div class="code-line" id="line33">  lamba := MAVİ;</div>
+      <div class="code-line" id="line34"> ELSE</div>
+      <div class="code-line" id="line35">  lamba := KIRMIZI;</div>
+      <div class="code-line" id="line36"> END_IF;</div>
+      <div class="code-line" id="line37">ELSE</div>
+      <div class="code-line" id="line38"> lamba := SARI;</div>
+      <div class="code-line" id="line39">END_IF;</div>
+    </div>
+    <div class="card">
+      <div class="input-group">
+        <label>Sıcaklık (0-100):</label><br>
+        <input type="number" id="tempInput4" min="0" max="100" value="25">
+        <label>Nem (0-100):</label><br>
+        <input type="number" id="humidityInput" min="0" max="100" value="50">
+        <button onclick="checkTemp4()">Uygula</button>
+      </div>
+      <div class="lamp" id="lamp4"></div>
+      <div class="status" id="status4">Durum: MAVİ</div>
+    </div>
   </div>
 
   <script>
-    function clearHighlights() {
+    // Basit IF (Butonlu)
+    function runSim1() {
+      const btn = document.getElementById("btn1").checked;
+      const lamp = document.getElementById("lamp1");
+      const status = document.getElementById("status1");
+
+      // Kod satırlarını sıfırla
       for (let i = 1; i <= 5; i++) {
-        document.getElementById(`line${i}`).classList.remove("highlight", "false-highlight");
+        document.getElementById("line" + i).classList.remove("highlight", "false-highlight");
       }
+
+      if (btn) {
+        document.getElementById("line1").classList.add("highlight");
+        document.getElementById("line2").classList.add("highlight");
+        lamp.className = "lamp yesil";
+        status.innerText = "Durum: YEŞİL";
+        status.style.color = "green";
+      } else {
+        document.getElementById("line3").classList.add("false-highlight");
+        document.getElementById("line4").classList.add("false-highlight");
+        lamp.className = "lamp kirmizi";
+        status.innerText = "Durum: KIRMIZI";
+        status.style.color = "red";
+      }
+
+      document.getElementById("line5").classList.add("highlight");
     }
 
-    function toggleButton() {
-      const checkbox = document.getElementById("toggleBtn");
-      const buttonPressed = checkbox.checked;
-      const lamp = document.getElementById("lamp");
-      const buttonStateText = document.getElementById("buttonState");
+    // İç İçe IF (Butonlu)
+    function runSim2() {
+      const btn = document.getElementById("btn2").checked;
+      const sys = document.getElementById("sys2").checked;
+      const lamp = document.getElementById("lamp2");
+      const status = document.getElementById("status2");
 
-      buttonStateText.textContent = buttonPressed ? "TRUE" : "FALSE";
-      buttonStateText.style.color = buttonPressed ? "green" : "red";
+      // Kod satırlarını sıfırla
+      for (let i = 11; i <= 19; i++) {
+        document.getElementById("line" + i).classList.remove("highlight", "false-highlight");
+      }
 
-      clearHighlights();
-      document.getElementById("line1").classList.add(buttonPressed ? "highlight" : "false-highlight");
-
-      setTimeout(() => {
-        if (buttonPressed) {
-          document.getElementById("line2").classList.add("highlight");
-          lamp.classList.add("on");
+      if (btn) {
+        document.getElementById("line11").classList.add("highlight");
+        if (sys) {
+          document.getElementById("line12").classList.add("highlight");
+          document.getElementById("line13").classList.add("highlight");
+          lamp.className = "lamp yesil";
+          status.innerText = "Durum: YEŞİL";
+          status.style.color = "green";
         } else {
-          document.getElementById("line3").classList.add("false-highlight");
-          document.getElementById("line4").classList.add("false-highlight");
-          lamp.classList.remove("on");
+          document.getElementById("line12").classList.add("highlight");
+          document.getElementById("line14").classList.add("false-highlight");
+          document.getElementById("line15").classList.add("false-highlight");
+          lamp.className = "lamp sari";
+          status.innerText = "Durum: SARI";
+          status.style.color = "orange";
         }
-      }, 300);
+        document.getElementById("line16").classList.add("highlight");
+      } else {
+        document.getElementById("line17").classList.add("false-highlight");
+        document.getElementById("line18").classList.add("false-highlight");
+        lamp.className = "lamp kirmizi";
+        status.innerText = "Durum: KIRMIZI";
+        status.style.color = "red";
+      }
+
+      document.getElementById("line19").classList.add("highlight");
     }
+
+    // IF - ELSE IF - ELSE (Sıcaklık)
+    function checkTemp3() {
+      const val = parseInt(document.getElementById("tempInput3").value);
+      const lamp = document.getElementById("lamp3");
+      const status = document.getElementById("status3");
+
+      // Kod satırlarını sıfırla
+      for (let i = 21; i <= 27; i++) {
+        document.getElementById("line" + i).classList.remove("highlight");
+      }
+
+      // Mantıksal işlem
+      if (val < 30) {
+        document.getElementById("line21").classList.add("highlight");
+        document.getElementById("line22").classList.add("highlight");
+        lamp.className = "lamp mavi";
+        status.innerText = "Durum: MAVİ";
+      } else if (val < 70) {
+        document.getElementById("line23").classList.add("highlight");
+        document.getElementById("line24").classList.add("highlight");
+        lamp.className = "lamp sari";
+        status.innerText = "Durum: SARI";
+      } else {
+        document.getElementById("line25").classList.add("highlight");
+        document.getElementById("line26").classList.add("highlight");
+        lamp.className = "lamp kirmizi";
+        status.innerText = "Durum: KIRMIZI";
+      }
+
+      document.getElementById("line27").classList.add("highlight");
+    }
+
+    // IF İçerisinde IF (Sıcaklık ve Nem)
+    function checkTemp4() {
+      const val = parseInt(document.getElementById("tempInput4").value);
+      const humidity = parseInt(document.getElementById("humidityInput").value);
+      const lamp = document.getElementById("lamp4");
+      const status = document.getElementById("status4");
+
+      // Kod satırlarını sıfırla
+      for (let i = 31; i <= 39; i++) {
+        document.getElementById("line" + i).classList.remove("highlight");
+      }
+
+      // Mantıksal işlem
+      if (val < 30) {
+        document.getElementById("line31").classList.add("highlight");
+        document.getElementById("line32").classList.add("highlight");
+        if (humidity < 60) {
+          document.getElementById("line33").classList.add("highlight");
+          lamp.className = "lamp mavi";
+          status.innerText = "Durum: MAVİ";
+        } else {
+          document.getElementById("line35").classList.add("highlight");
+          lamp.className = "lamp kirmizi";
+          status.innerText = "Durum: KIRMIZI";
+        }
+        document.getElementById("line36").classList.add("highlight");
+      } else {
+        document.getElementById("line37").classList.add("highlight");
+        document.getElementById("line38").classList.add("highlight");
+        lamp.className = "lamp sari";
+        status.innerText = "Durum: SARI";
+      }
+
+      document.getElementById("line39").classList.add("highlight");
+    }
+
+    // Sayfa açıldığında çalışsın
+    window.onload = function() {
+      runSim1();
+      runSim2();
+      checkTemp3();
+      checkTemp4();
+    };
   </script>
 
 </body>
