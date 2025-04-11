@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>IF Koşulu Simülasyonu - Kompakt Tasarım</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f5f5f5;
+      margin: 0;
+      padding: 40px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    .wrapper {
+      display: flex;
+      flex-direction: row;
+      gap: 30px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .card {
+      background-color: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      padding: 20px;
+      width: 300px;
+    }
+
+    .code-box {
+      font-family: 'Courier New', monospace;
+      background-color: #1e1e1e;
+      color: #eee;
+      padding: 20px;
+      border-radius: 10px;
+      font-size: 16px;
+    }
+
+    .code-line {
+      margin: 6px 0;
+    }
+
+    .highlight {
+      background-color: #333;
+      color: #00ff00;
+    }
+
+    .false-highlight {
+      background-color: #333;
+      color: red;
+    }
+
+    .toggle-container {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 60px;
+      height: 34px;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #ccc;
+      transition: .4s;
+      border-radius: 34px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 26px;
+      width: 26px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+      box-shadow: 0 0 5px rgba(0,0,0,0.3);
+    }
+
+    input:checked + .slider {
+      background-color: #4caf50;
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(26px);
+    }
+
+    .lamp {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      margin: 10px auto;
+      background-color: #333;
+      box-shadow: inset 0 0 10px #111;
+      transition: all 0.3s ease;
+    }
+
+    .lamp.on {
+      background-color: #00ff00;
+      box-shadow: 0 0 15px #00ff00, inset 0 0 10px #00aa00;
+    }
+
+    .status {
+      text-align: center;
+      font-weight: bold;
+      margin-top: 10px;
+      color: #444;
+    }
+
+    @media(max-width: 700px) {
+      .wrapper {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+
+  </style>
+</head>
+<body>
+
+  <h1>IF Koşulu Simülasyonu</h1>
+
+  <div class="wrapper">
+    
+    <!-- Kod Kutusu -->
+    <div class="card code-box">
+      <div class="code-line" id="line1">IF buton == TRUE THEN</div>
+      <div class="code-line" id="line2"> lamba := YANIK;</div>
+      <div class="code-line" id="line3">ELSE</div>
+      <div class="code-line" id="line4"> lamba := SÖNÜK;</div>
+      <div class="code-line" id="line5">END_IF;</div>
+    </div>
+
+    <!-- Test Paneli Kutusu -->
+    <div class="card">
+      <div class="toggle-container">
+        <label class="switch">
+          <input type="checkbox" id="toggleBtn" onclick="toggleButton()">
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="lamp" id="lamp"></div>
+
+      <div class="status">
+        Buton Durumu: <span id="buttonState">FALSE</span>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    function clearHighlights() {
+      for (let i = 1; i <= 5; i++) {
+        document.getElementById(`line${i}`).classList.remove("highlight", "false-highlight");
+      }
+    }
+
+    function toggleButton() {
+      const checkbox = document.getElementById("toggleBtn");
+      const buttonPressed = checkbox.checked;
+      const lamp = document.getElementById("lamp");
+      const buttonStateText = document.getElementById("buttonState");
+
+      buttonStateText.textContent = buttonPressed ? "TRUE" : "FALSE";
+      buttonStateText.style.color = buttonPressed ? "green" : "red";
+
+      clearHighlights();
+      document.getElementById("line1").classList.add(buttonPressed ? "highlight" : "false-highlight");
+
+      setTimeout(() => {
+        if (buttonPressed) {
+          document.getElementById("line2").classList.add("highlight");
+          lamp.classList.add("on");
+        } else {
+          document.getElementById("line3").classList.add("false-highlight");
+          document.getElementById("line4").classList.add("false-highlight");
+          lamp.classList.remove("on");
+        }
+      }, 300);
+    }
+  </script>
+
+</body>
+</html>
