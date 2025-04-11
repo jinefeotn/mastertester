@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
+<script>
+  // Sağ tık menüsünü engelle
+  document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+  });
+</script>
   <meta charset="UTF-8">
   <title>Koşul Yapıları Simülasyonu</title>
   <style>
@@ -410,11 +416,6 @@
       checkTemp4();
     };
   </script>
-<script>
-  // Sağ tık menüsünü engelle
-  document.addEventListener('contextmenu', function(e) {
-    e.preventDefault();
-  });
-</script>
+
 </body>
 </html>
