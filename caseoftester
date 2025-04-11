@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>PLC Koşul Yapıları Simülasyonu - CASE</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f2f2f2;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .section {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+            max-width: 900px;
+            width: 100%;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            padding: 20px;
+            width: 300px;
+        }
+
+        .code-box {
+            font-family: 'Courier New', monospace;
+            background-color: #1e1e1e;
+            color: #eee;
+            padding: 20px;
+            border-radius: 10px;
+            font-size: 16px;
+        }
+
+        .code-line {
+            margin: 6px 0;
+        }
+
+        .highlight {
+            background-color: #333;
+            color: #00ff00;
+        }
+
+        .false-highlight {
+            background-color: #333;
+            color: red;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .input-group input {
+            padding: 10px;
+            font-size: 16px;
+            width: 80px;
+            text-align: center;
+        }
+
+        .input-group button {
+            padding: 10px 20px;
+            margin-left: 10px;
+            background-color: #007BFF;
+            border: none;
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .toggle-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            gap: 10px;
+        }
+
+        .lamp {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin: 20px auto;
+            background-color: #333;
+            box-shadow: inset 0 0 10px #111;
+            transition: all 0.3s ease;
+        }
+
+        .mavi { background-color: #00bfff; box-shadow: 0 0 15px #00bfff; }
+        .sari { background-color: #ffcc00; box-shadow: 0 0 15px #ffcc00; }
+        .kirmizi { background-color: #ff4444; box-shadow: 0 0 15px #ff4444; }
+        .yesil { background-color: #00ff00; box-shadow: 0 0 15px #00ff00; }
+        .mor { background-color: #8a2be2; box-shadow: 0 0 15px #8a2be2; }
+
+        .status {
+            text-align: center;
+            font-weight: bold;
+            color: #444;
+            margin-top: 10px;
+        }
+
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .radio-group label {
+            margin-left: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>PLC Koşul Yapıları Simülasyonu - CASE</h1>
+
+    <!-- 1. Simülasyon - Basit CASE Yapısı (Tek Değerler) -->
+    <div class="section">
+        <div class="card code-box">
+            <div class="code-line" id="line1">CASE mode OF</div>
+            <div class="code-line" id="line2"> 1: lamba := 'YEŞİL';</div>
+            <div class="code-line" id="line3"> 2: lamba := 'SARI';</div>
+            <div class="code-line" id="line4"> 3: lamba := 'KIRMIZI';</div>
+            <div class="code-line" id="line5"> ELSE</div>
+            <div class="code-line" id="line6">  lamba := 'KAPALI';</div>
+            <div class="code-line" id="line7">END_CASE;</div>
+        </div>
+        <div class="card">
+            <div class="input-group">
+                <label>Mod Seç (1-3):</label><br>
+                <div class="radio-group">
+                    <div>
+                        <input type="radio" name="mode" id="mode1" value="1" checked onclick="runCase1()">
+                        <label for="mode1">Mod 1</label>
+                    </div>
+                    <div>
+                        <input type="radio" name="mode" id="mode2" value="2" onclick="runCase1()">
+                        <label for="mode2">Mod 2</label>
+                    </div>
+                    <div>
+                        <input type="radio" name="mode" id="mode3" value="3" onclick="runCase1()">
+                        <label for="mode3">Mod 3</label>
+                    </div>
+                    <div>
+                        <input type="radio" name="mode" id="mode_else" value="else" onclick="runCase1()">
+                        <label for="mode_else">Diğer</label>
+                    </div>
+                </div>
+            </div>
+            <div class="lamp" id="lamp1"></div>
+            <div class="status" id="status1">Durum: YEŞİL</div>
+        </div>
+    </div>
+
+    <!-- 2. Simülasyon - CASE ile Aralıklar (Sıcaklık) -->
+    <div class="section">
+        <div class="card code-box">
+            <div class="code-line" id="line11">CASE sıcaklık OF</div>
+            <div class="code-line" id="line12"> 0...30: lamba := 'MAVİ';</div>
+            <div class="code-line" id="line13"> 31...60: lamba := 'SARI';</div>
+            <div class="code-line" id="line14"> 61...100: lamba := 'KIRMIZI';</div>
+            <div class="code-line" id="line15"> ELSE</div>
+            <div class="code-line" id="line16">  lamba := 'KAPALI';</div>
+            <div class="code-line" id="line17">END_CASE;</div>
+        </div>
+        <div class="card">
+            <div class="input-group">
+                <label>Sıcaklık (0-100):</label><br>
+                <input type="number" id="tempInput" min="0" max="100" value="25">
+                <button onclick="runCase2()">Uygula</button>
+            </div>
+            <div class="lamp" id="lamp2"></div>
+            <div class="status" id="status2">Durum: MAVİ</div>
+        </div>
+    </div>
+
+    <!-- 3. Simülasyon - CASE ile Bit Dizileri -->
+    <div class="section">
+        <div class="card code-box">
+            <div class="code-line" id="line21">CASE durum OF</div>
+            <div class="code-line" id="line22"> 2#00: lamba := 'YEŞİL';</div>
+            <div class="code-line" id="line23"> 2#01: lamba := 'SARI';</div>
+            <div class="code-line" id="line24"> 2#10: lamba := 'KIRMIZI';</div>
+            <div class="code-line" id="line25"> 2#11: lamba := 'MOR';</div>
+            <div class="code-line" id="line26"> ELSE</div>
+            <div class="code-line" id="line27">  lamba := 'KAPALI';</div>
+            <div class="code-line" id="line28">END_CASE;</div>
+        </div>
+        <div class="card">
+            <div class="input-group">
+                <label>Durum Seç:</label><br>
+                <select id="bitString" onchange="runCase3()">
+                    <option value="2#00">2#00</option>
+                    <option value="2#01">2#01</option>
+                    <option value="2#10">2#10</option>
+                    <option value="2#11">2#11</option>
+                    <option value="else">Diğer</option>
+                </select>
+            </div>
+            <div class="lamp" id="lamp3"></div>
+            <div class="status" id="status3">Durum: YEŞİL</div>
+        </div>
+    </div>
+
+    <!-- 4. Simülasyon - CASE ile Karışık Değerler -->
+    <div class="section">
+        <div class="card code-box">
+            <div class="code-line" id="line31">CASE değer OF</div>
+            <div class="code-line" id="line32"> 5: lamba := 'YEŞİL';</div>
+            <div class="code-line" id="line33"> 10, 15, 20: lamba := 'SARI';</div>
+            <div class="code-line" id="line34"> 25...50: lamba := 'KIRMIZI';</div>
+            <div class="code-line" id="line35"> ELSE</div>
+            <div class="code-line" id="line36">  lamba := 'KAPALI';</div>
+            <div class="code-line" id="line37">END_CASE;</div>
+        </div>
+        <div class="card">
+            <div class="input-group">
+                <label>Değer Gir:</label><br>
+                <input type="number" id="valueInput" value="5">
+                <button onclick="runCase4()">Uygula</button>
+            </div>
+            <div class="lamp" id="lamp4"></div>
+            <div class="status" id="status4">Durum: YEŞİL</div>
+        </div>
+    </div>
+
+    <script>
+        // 1. Simülasyon - Basit CASE
+        function runCase1() {
+            const mode = document.querySelector('input[name="mode"]:checked').value;
+            const lamp = document.getElementById("lamp1");
+            const status = document.getElementById("status1");
+
+            // Kod satırlarını sıfırla
+            for (let i = 1; i <= 7; i++) {
+                document.getElementById("line" + i).classList.remove("highlight", "false-highlight");
+            }
+
+            if (mode === "1") {
+                document.getElementById("line2").classList.add("highlight");
+                lamp.className = "lamp yesil";
+                status.innerText = "Durum: YEŞİL";
+                status.style.color = "green";
+            } else if (mode === "2") {
+                document.getElementById("line3").classList.add("highlight");
+                lamp.className = "lamp sari";
+                status.innerText = "Durum: SARI";
+                status.style.color = "orange";
+            } else if (mode === "3") {
+                document.getElementById("line4").classList.add("highlight");
+                lamp.className = "lamp kirmizi";
+                status.innerText = "Durum: KIRMIZI";
+                status.style.color = "red";
+            } else {
+                document.getElementById("line5").classList.add("highlight");
+                document.getElementById("line6").classList.add("highlight");
+                lamp.className = "lamp";
+                status.innerText = "Durum: KAPALI";
+                lamp.style.background = "#333";
+                lamp.style.boxShadow = "inset 0 0 10px #111";
+            }
+
+            document.getElementById("line1").classList.add("highlight");
+            document.getElementById("line7").classList.add("highlight");
+        }
+
+        // 2. Simülasyon - CASE ile Aralıklar
+        function runCase2() {
+            const val = parseInt(document.getElementById("tempInput").value);
+            const lamp = document.getElementById("lamp2");
+            const status = document.getElementById("status2");
+
+            // Kod satırlarını sıfırla
+            for (let i = 11; i <= 17; i++) {
+                document.getElementById("line" + i).classList.remove("highlight", "false-highlight");
+            }
+
+            if (val >= 0 && val <= 30) {
+                document.getElementById("line12").classList.add("highlight");
+                lamp.className = "lamp mavi";
+                status.innerText = "Durum: MAVİ";
+                status.style.color = "#00bfff";
+            } else if (val >= 31 && val <= 60) {
+                document.getElementById("line13").classList.add("highlight");
+                lamp.className = "lamp sari";
+                status.innerText = "Durum: SARI";
+                status.style.color = "orange";
+            } else if (val >= 61 && val <= 100) {
+                document.getElementById("line14").classList.add("highlight");
+                lamp.className = "lamp kirmizi";
+                status.innerText = "Durum: KIRMIZI";
+                status.style.color = "red";
+            } else {
+                document.getElementById("line15").classList.add("highlight");
+                document.getElementById("line16").classList.add("highlight");
+                lamp.className = "lamp";
+                status.innerText = "Durum: KAPALI";
+                lamp.style.background = "#333";
+                lamp.style.boxShadow = "inset 0 0 10px #111";
+            }
+
+            document.getElementById("line11").classList.add("highlight");
+            document.getElementById("line17").classList.add("highlight");
+        }
+
+        // 3. Simülasyon - CASE ile Bit Dizileri
+        function runCase3() {
+            const bitString = document.getElementById("bitString").value;
+            const lamp = document.getElementById("lamp3");
+            const status = document.getElementById("status3");
+
+            // Kod satırlarını sıfırla
+            for (let i = 21; i <= 28; i++) {
+                document.getElementById("line" + i).classList.remove("highlight", "false-highlight");
+            }
+
+            if (bitString === "2#00") {
+                document.getElementById("line22").classList.add("highlight");
+                lamp.className = "lamp yesil";
+                status.innerText = "Durum: YEŞİL";
+                status.style.color = "green";
+            } else if (bitString === "2#01") {
+                document.getElementById("line23").classList.add("highlight");
+                lamp.className = "lamp sari";
+                status.innerText = "Durum: SARI";
+                status.style.color = "orange";
+            } else if (bitString === "2#10") {
+                document.getElementById("line24").classList.add("highlight");
+                lamp.className = "lamp kirmizi";
+                status.innerText = "Durum: KIRMIZI";
+                status.style.color = "red";
+            } else if (bitString === "2#11") {
+                document.getElementById("line25").classList.add("highlight");
+                lamp.className = "lamp mor";
+                status.innerText = "Durum: MOR";
+                status.style.color = "purple";
+            } else {
+                document.getElementById("line26").classList.add("highlight");
+                document.getElementById("line27").classList.add("highlight");
+                lamp.className = "lamp";
+                status.innerText = "Durum: KAPALI";
+                lamp.style.background = "#333";
+                lamp.style.boxShadow = "inset 0 0 10px #111";
+            }
+
+            document.getElementById("line21").classList.add("highlight");
+            document.getElementById("line28").classList.add("highlight");
+        }
+
+        // 4. Simülasyon - CASE ile Karışık Değerler
+        function runCase4() {
+            const val = parseInt(document.getElementById("valueInput").value);
+            const lamp = document.getElementById("lamp4");
+            const status = document.getElementById("status4");
+
+            // Kod satırlarını sıfırla
+            for (let i = 31; i <= 37; i++) {
+                document.getElementById("line" + i).classList.remove("highlight", "false-highlight");
+            }
+
+            if (val === 5) {
+                document.getElementById("line32").classList.add("highlight");
+                lamp.className = "lamp yesil";
+                status.innerText = "Durum: YEŞİL";
+                status.style.color = "green";
+            } else if ([10, 15, 20].includes(val)) {
+                document.getElementById("line33").classList.add("highlight");
+                lamp.className = "lamp sari";
+                status.innerText = "Durum: SARI";
+                status.style.color = "orange";
+            } else if (val >= 25 && val <= 50) {
+                document.getElementById("line34").classList.add("highlight");
+                lamp.className = "lamp kirmizi";
+                status.innerText = "Durum: KIRMIZI";
+                status.style.color = "red";
+            } else {
+                document.getElementById("line35").classList.add("highlight");
+                document.getElementById("line36").classList.add("highlight");
+                lamp.className = "lamp";
+                status.innerText = "Durum: KAPALI";
+                lamp.style.background = "#333";
+                lamp.style.boxShadow = "inset 0 0 10px #111";
+            }
+
+            document.getElementById("line31").classList.add("highlight");
+            document.getElementById("line37").classList.add("highlight");
+        }
+
+        // Sayfa açıldığında çalışsın
+        window.onload = function() {
+            runCase1();
+            runCase2();
+            runCase3();
+            runCase4();
+        };
+    </script>
+
+</body>
+</html>
