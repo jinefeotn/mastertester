@@ -410,6 +410,11 @@
       checkTemp4();
     };
   </script>
-
+<script>
+  // Sağ tık menüsünü engelle
+  document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+  });
+</script>
 </body>
 </html>
