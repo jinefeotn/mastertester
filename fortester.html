@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Siemens SCL FOR Döngüsü Simülasyonu</title>
+    <style>
+        .tia-edit-menu {
+            font-family: 'Helvetica', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+            padding: 20px;
+        }
+
+        .tia-edit-menu h1 {
+            font-size: 28px;
+            color: #2a4d69;
+            text-align: center;
+            margin: 0 0 20px 0;
+            border-bottom: 2px solid #d1d9e0;
+            padding-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .tia-edit-menu h3 {
+            font-size: 18px;
+            color: #2a4d69;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            background-color: #f0f0f0;
+            padding: 5px 10px;
+        }
+
+        .tia-edit-menu p {
+            margin: 10px 0;
+            text-align: justify;
+            text-indent: 20px;
+        }
+
+        .tia-edit-menu .section {
+            max-width: 900px;
+            width: 100%;
+            margin-bottom: 40px;
+        }
+
+        .tia-edit-menu .card {
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            padding: 20px;
+            width: 100%;
+            box-sizing: border-box;
+            margin-bottom: 20px;
+        }
+
+        .tia-edit-menu .code-box {
+            font-family: 'Courier New', monospace;
+            background-color: #1e1e1e;
+            color: #eee;
+            padding: 20px;
+            border-radius: 10px;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        .tia-edit-menu .code-line {
+            margin: 6px 0;
+        }
+
+        .tia-edit-menu .highlight {
+            background-color: #333;
+            color: #00ff00;
+        }
+
+        .tia-edit-menu .input-group {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .tia-edit-menu .input-group input {
+            padding: 10px;
+            font-size: 16px;
+            width: 80px;
+            text-align: center;
+            margin: 5px;
+        }
+
+        .tia-edit-menu .input-group button {
+            padding: 10px 20px;
+            margin-left: 10px;
+            background-color: #007BFF;
+            border: none;
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .tia-edit-menu .grid-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* 3 sütunlu grid */
+            gap: 5px;
+            padding: 10px;
+            border: 2px solid #d1d9e0;
+            background-color: #f9f9f9;
+            width: 100%;
+            box-sizing: border-box;
+            max-width: 100%;
+        }
+
+        .tia-edit-menu .grid-box {
+            border: 1px solid #d1d9e0;
+            padding: 5px;
+            text-align: center;
+            background-color: #fff;
+            min-width: 50px;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+
+        .tia-edit-menu .filled {
+            background-color: #00ff00;
+            color: #000;
+        }
+
+        .tia-edit-menu .status {
+            text-align: center;
+            font-weight: bold;
+            color: #444;
+            margin-top: 10px;
+        }
+
+        @media only screen and (max-width: 600px) {
+            .tia-edit-menu {
+                padding: 10px;
+            }
+            .tia-edit-menu h1 {
+                font-size: 22px;
+            }
+            .tia-edit-menu h3 {
+                font-size: 16px;
+            }
+            .tia-edit-menu p {
+                font-size: 14px;
+                text-indent: 15px;
+            }
+            .tia-edit-menu .input-group input, .tia-edit-menu .input-group button {
+                font-size: 14px;
+                padding: 8px;
+                width: 70px;
+            }
+            .tia-edit-menu .grid-container {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .tia-edit-menu .grid-box {
+                min-width: 30px;
+                min-height: 30px;
+                font-size: 12px;
+                padding: 3px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="tia-edit-menu">
+
+    <h1>Siemens SCL FOR Döngüsü Simülasyonu</h1>
+
+    <p>Bu simülatör, Siemens SCL programlama dilinde FOR döngüsünün 50 kutuyu sırayla nasıl doldurduğunu gösterir. Kullanıcı, başlangıç değerini (örneğin 2) ve artış miktarını (örneğin 3) girer. "Başla" butonuna basıldığında, kutular 3'erli gruplar halinde aşağı doğru 2, 5, 8, ... gibi doldurulur, 50'yi aşmaz ve kalan kutular boş (0) kalır.</p>
+
+    <div class="section">
+        <div class="card">
+            <div class="code-box">
+                <div class="code-line" id="line1">FOR #Sayac := 0 TO 49 BY 1 DO</div>
+                <div class="code-line" id="line2">    IF #CurrentValue <= 50 THEN</div>
+                <div class="code-line" id="line3">        "Kutular"[#Sayac] := #CurrentValue;</div>
+                <div class="code-line" id="line4">        #CurrentValue := #CurrentValue + #Artis;</div>
+                <div class="code-line" id="line5">    END_IF;</div>
+                <div class="code-line" id="line6">END_FOR;</div>
+            </div>
+            <div class="input-group">
+                <label>Başlangıç:</label>
+                <input type="number" id="startValue" min="0" max="50" value="2">
+                <label>Kaç Arttır:</label>
+                <input type="number" id="stepValue" min="1" max="50" value="3">
+                <button onclick="runForLoop()">Başla</button>
+            </div>
+            <div class="status" id="status">Durum: Hazır</div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="card">
+            <div class="grid-container" id="gridContainer">
+                <!-- 50 kutu dinamik olarak oluşturulacak -->
+            </div>
+        </div>
+    </div>
+
+    <h3>Simülatör Açıklama</h3>
+    <p>Bu simülatör, SCL'deki FOR döngüsünü kullanarak 50 kutuyu 3'erli gruplar halinde aşağı doğru doldurur. Kullanıcı, "Başlangıç" (0-50) ve "Kaç Arttır" (1-50) değerlerini girer. "Başla" butonuna basıldığında, kutular sırayla doldurulur (örneğin, 2, 5, 8, ...). 50'yi aşan değerler yazılmaz ve kalan kutular boş (0) kalır. Her doldurulan kutu yeşil renkte görünür.</p>
+
+    <script>
+        // Sayfa yüklendiğinde gridi oluştur
+        window.onload = function() {
+            const gridContainer = document.getElementById("gridContainer");
+            const status = document.getElementById("status");
+
+            // 50 kutu oluştur
+            for (let i = 0; i < 50; i++) {
+                const box = document.createElement("div");
+                box.className = "grid-box";
+                box.id = "box" + i;
+                box.textContent = "0";
+                gridContainer.appendChild(box);
+                console.log("Kutu oluşturuldu: box" + i); // Hata ayıklama
+            }
+
+            status.innerText = "Durum: Hazır";
+        };
+
+        function runForLoop() {
+            // Önceki highlight'ları kaldır
+            for (let i = 1; i <= 6; i++) {
+                document.getElementById("line" + i).classList.remove("highlight");
+            }
+
+            const start = parseInt(document.getElementById("startValue").value);
+            const step = parseInt(document.getElementById("stepValue").value);
+            const status = document.getElementById("status");
+
+            // Hata kontrolü
+            if (isNaN(start) || isNaN(step) || start < 0 || start > 50 || step <= 0 || step > 50) {
+                status.innerText = "Hata: Geçersiz değerler! (Başlangıç: 0-50, Artış: 1-50)";
+                status.style.color = "red";
+                return;
+            }
+
+            status.innerText = "Durum: Döngü Çalışıyor...";
+            status.style.color = "#444";
+
+            // Tüm kutuları sıfırla (beyaz yap)
+            for (let i = 0; i < 50; i++) {
+                const box = document.getElementById("box" + i);
+                if (box) {
+                    box.textContent = "0";
+                    box.classList.remove("filled");
+                }
+            }
+
+            // FOR döngüsünü simüle et
+            let currentValue = start;
+            for (let i = 0; i < 50; i++) {
+                document.getElementById("line1").classList.add("highlight"); // FOR
+                document.getElementById("line2").classList.add("highlight"); // IF
+
+                if (currentValue <= 50) {
+                    document.getElementById("line3").classList.add("highlight"); // Kutuları doldur
+                    document.getElementById("line4").classList.add("highlight"); // Artış
+
+                    const box = document.getElementById("box" + i);
+                    if (box) {
+                        box.textContent = currentValue; // Değeri güncelle
+                        box.classList.add("filled"); // Yeşil renkle doldur
+                        status.innerText = `Durum: Kutu ${i} Dolduruldu (Değer: ${currentValue})`;
+
+                        // Görsellik için kısa gecikme
+                        setTimeout(() => {
+                            for (let j = 1; j <= 6; j++) {
+                                document.getElementById("line" + j).classList.remove("highlight");
+                            }
+                        }, 500);
+                    }
+
+                    currentValue += step;
+                } else {
+                    // Değer 50'yi aştıysa döngüden çık
+                    break;
+                }
+
+                // Her adımda biraz bekle (asenkron olmadan)
+                setTimeout(() => {}, 1000); // 1 saniye bekleme
+            }
+
+            // Döngü bittiğinde
+            document.getElementById("line6").classList.add("highlight"); // END_FOR
+            status.innerText = "Durum: Döngü Tamamlandı";
+            status.style.color = "green";
+
+            // Highlight'ları son kez temizle
+            setTimeout(() => {
+                for (let i = 1; i <= 6; i++) {
+                    document.getElementById("line" + i).classList.remove("highlight");
+                }
+                status.innerText = "Durum: Hazır";
+            }, 1000);
+        }
+    </script>
+
+</div>
+
+</body>
+</html>
