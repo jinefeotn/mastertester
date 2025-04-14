@@ -8,6 +8,10 @@
 <body>
     <div class="genel-guide">
         <style scoped>
+            body {
+                margin: 0;
+                padding: 0;
+            }
             .genel-guide {
                 font-family: Arial, sans-serif;
                 line-height: 1.6;
@@ -149,4 +153,67 @@
                 const previewGrid = document.getElementById('previewGrid');
                 previewGrid.innerHTML = ''; // Önceki kutuları temizle
 
-                const defaultImage = 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhVtku0OxPJIoKqWHv67iuaS5aUC5KlD3BJSFXdvLthF8X8S2AeqVagI3eORpyjLxIImRWCYv
+                const defaultImage = 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhVtku0OxPJIoKqWHv67iuaS5aUC5KlD3BJSFXdvLthF8X8S2AeqVagI3eORpyjLxIImRWCYvUst4sMVgopxqj9bM-sQIW4DFvt1hU8_xbRG5-blQUk6kPSxlVPpy8s2V1M2aSqeXX8PlChFn050F1Q4nEKNW3F7wNiGqVpneGR7ZOx-cI7ZsxLxU0IHunz/s1600/genelbilgilerplcmasterakademi.JPG';
+
+                for (const link of links) {
+                    try {
+                        // Proxy üzerinden sayfa içeriğini çek
+                        const response = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(link)}`);
+                        const htmlText = await response.text();
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(htmlText, 'text/html');
+
+                        // Başlık: <title> veya ilk <h1>
+                        let title = doc.querySelector('title')?.textContent || doc.querySelector('h1')?.textContent || 'Başlık Bulunamadı';
+                        title = title.trim().substring(0, 100); // Başlık uzunluğunu sınırla
+
+                        // Özet: Meta description veya ilk <p>’den ilk 200 karakter
+                        let description = doc.querySelector('meta[name="description"]')?.content ||
+                                         doc.querySelector('p')?.textContent || 'İçerik bulunamadı.';
+                        description = description.trim().substring(0, 200) + (description.length > 200 ? '...' : '');
+
+                        // Görsel: og:image veya ilk <img>
+                        let image = doc.querySelector('meta[property="og:image"]')?.content ||
+                                    doc.querySelector('img')?.src ||
+                                    defaultImage;
+
+                        // HTML’yi güvenli hale getir (XSS önlemi)
+                        title = title.replace(/</g, '<').replace(/>/g, '>');
+                        description = description.replace(/</g, '<').replace(/>/g, '>');
+
+                        // Ön izleme kutusu oluştur
+                        const previewContainer = document.createElement('div');
+                        previewContainer.className = 'preview-container';
+                        previewContainer.onclick = () => window.open(link, '_blank');
+                        previewContainer.innerHTML = `
+                            <div class="preview-box">
+                                <img src="${image}" alt="PLC Image">
+                                <h4>${title}</h4>
+                                <p class="preview-text">${description}</p>
+                            </div>
+                        `;
+                        previewGrid.appendChild(previewContainer);
+                    } catch (error) {
+                        console.error(`Hata: ${link} işlenemedi`, error);
+                        // Hata durumunda varsayılan kutu
+                        const previewContainer = document.createElement('div');
+                        previewContainer.className = 'preview-container';
+                        previewContainer.onclick = () => window.open(link, '_blank');
+                        previewContainer.innerHTML = `
+                            <div class="preview-box">
+                                <img src="${defaultImage}" alt="PLC Image">
+                                <h4>Veri Çekilemedi</h4>
+                                <p class="preview-text">Linkten içerik alınamadı. Sayfayı ziyaret etmek için tıklayın...</p>
+                            </div>
+                        `;
+                        previewGrid.appendChild(previewContainer);
+                    }
+                }
+            }
+
+            // Sayfada otomatik çalıştır
+            window.onload = generatePreviews;
+        </script>
+    </div>
+</body>
+</html>
