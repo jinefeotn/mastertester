@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PLC Master Akademi Previews</title>
+</head>
+<body>
+    <div class="genel-guide">
+        <style scoped>
+            .genel-guide {
+                font-family: Arial, sans-serif;
+                line-height: 1.6;
+                color: #333;
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 20px;
+            }
+            .genel-guide p {
+                margin: 10px 0;
+                text-align: justify;
+            }
+            .genel-guide .preview-grid {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+                justify-content: flex-start;
+                width: 100%;
+            }
+            .genel-guide .preview-container {
+                width: 225px;
+                height: 300px;
+                border: 1px solid #e0e0e0;
+                border-radius: 8px;
+                overflow: hidden;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+                background-color: #fff;
+                transition: all 0.3s ease;
+                flex: 0 0 225px;
+                cursor: pointer;
+            }
+            .genel-guide .preview-container:hover {
+                box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            }
+            .genel-guide .preview-box {
+                padding: 10px;
+                display: flex;
+                flex-direction: column;
+                height: 100%;
+            }
+            .genel-guide .preview-box img {
+                max-width: 100%;
+                height: 120px;
+                object-fit: cover;
+                margin-bottom: 10px;
+            }
+            .genel-guide .preview-box h4 {
+                margin: 0 0 8px 0;
+                font-size: 16px;
+                color: #333;
+                font-weight: 600;
+                white-space: normal;
+                line-height: 1.2;
+                max-height: 60px;
+                overflow: hidden;
+                text-align: center;
+            }
+            .genel-guide .preview-text {
+                font-size: 13px;
+                color: #666;
+                margin: 0 0 8px 0;
+                line-height: 1.3;
+                text-align: justify;
+                flex-grow: 1;
+                position: relative;
+                overflow: hidden;
+            }
+            .genel-guide .preview-text::after {
+                content: "";
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                height: 50px;
+                background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
+                pointer-events: none;
+            }
+            @media only screen and (max-width: 600px) {
+                .genel-guide {
+                    padding: 15px;
+                    max-width: 100%;
+                }
+                .genel-guide p {
+                    font-size: 16px;
+                }
+                .genel-guide .preview-container {
+                    width: 100%;
+                    height: auto;
+                    flex: 0 0 100%;
+                    margin: 10px 0;
+                }
+                .genel-guide .preview-box {
+                    padding: 8px;
+                }
+                .genel-guide .preview-box h4 {
+                    font-size: 14px;
+                    max-height: 56px;
+                    text-align: center;
+                }
+                .genel-guide .preview-text {
+                    font-size: 12px;
+                    line-height: 1.2;
+                }
+                .genel-guide .preview-text::after {
+                    height: 40px;
+                }
+            }
+            @media only screen and (min-width: 601px) and (max-width: 960px) {
+                .genel-guide .preview-container {
+                    flex: 0 0 calc(50% - 5px);
+                }
+            }
+            @media only screen and (min-width: 961px) and (max-width: 1200px) {
+                .genel-guide .preview-container {
+                    flex: 0 0 calc(33.33% - 6.67px);
+                }
+            }
+        </style>
+        <div class="separator" style="clear: both;">
+            <a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhVtku0OxPJIoKqWHv67iuaS5aUC5KlD3BJSFXdvLthF8X8S2AeqVagI3eORpyjLxIImRWCYvUst4sMVgopxqj9bM-sQIW4DFvt1hU8_xbRG5-blQUk6kPSxlVPpy8s2V1M2aSqeXX8PlChFn050F1Q4nEKNW3F7wNiGqVpneGR7ZOx-cI7ZsxLxU0IHunz/s1600/genelbilgilerplcmasterakademi.JPG" style="display: block; padding: 1em 0; text-align: center;">
+                <img alt="PLC programlama ve otomasyon öğrenin! Bit, sinyaller, PLC türleri ve TIA Portal rehberleriyle PLC Master Akademi'de bilgi edinin." border="0" data-original-height="832" data-original-width="1472" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhVtku0OxPJIoKqWHv67iuaS5aUC5KlD3BJSFXdvLthF8X8S2AeqVagI3eORpyjLxIImRWCYvUst4sMVgopxqj9bM-sQIW4DFvt1hU8_xbRG5-blQUk6kPSxlVPpy8s2V1M2aSqeXX8PlChFn050F1Q4nEKNW3F7wNiGqVpneGR7ZOx-cI7ZsxLxU0IHunz/s1600/genelbilgilerplcmasterakademi.JPG"/>
+            </a>
+        </div>
+        <p>PLC programlama ve endüstriyel otomasyon dünyasına dair temel bilgileri bu sayfada bulabilirsiniz. Aşağıda, rehber yazılarımızın otomatik oluşturulan özetlerini bulabilirsiniz.</p>
+
+        <div class="preview-grid" id="previewGrid"></div>
+
+        <script>
+            // Linkleri buraya ekleyin
+            const links = [
+                "https://www.plcmasterakademi.com/2025/03/dijital-dunyadan-plc-programlamaya-bit.html",
+                "https://www.plcmasterakademi.com/2025/03/tia-portalda-fonksiyon-blok-fb-ile.html",
+                "https://www.plcmasterakademi.com/2025/03/dijital-sinyal-nedir.html",
+                "https://www.plcmasterakademi.com/2025/03/analog-sinyal-nedir-plc-sistemlerinde.html",
+                "https://www.plcmasterakademi.com/2025/03/plc-nedir.html"
+            ];
+
+            async function generatePreviews() {
+                const previewGrid = document.getElementById('previewGrid');
+                previewGrid.innerHTML = ''; // Önceki kutuları temizle
+
+                const defaultImage = 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhVtku0OxPJIoKqWHv67iuaS5aUC5KlD3BJSFXdvLthF8X8S2AeqVagI3eORpyjLxIImRWCYv
