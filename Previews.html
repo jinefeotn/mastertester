@@ -11,6 +11,24 @@
     <pre id="output"></pre>
 
     <script>
+        async function fetchWithRetry(url, maxRetries = 5, delay = 2000) {
+            for (let attempt = 1; attempt <= maxRetries; attempt++) {
+                try {
+                    const response = await fetch(url);
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response;
+                } catch (error) {
+                    console.error(`Deneme ${attempt} başarısız: ${error.message}`);
+                    if (attempt === maxRetries) {
+                        throw error;
+                    }
+                    await new Promise(resolve => setTimeout(resolve, delay));
+                }
+            }
+        }
+
         async function generatePreview() {
             const link = document.getElementById('linkInput').value.trim();
             const outputDiv = document.getElementById('output');
@@ -21,18 +39,10 @@
                 return;
             }
 
+            outputDiv.textContent = 'Veri çekiliyor, lütfen bekleyin...';
+
             try {
-                const proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(link);
-                const response = await fetch(proxyUrl, {
-                    headers: {
-                        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
-                    }
-                });
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-
+                const response = await fetchWithRetry(`https://api.allorigins.win/raw?url=${encodeURIComponent(link)}`);
                 const htmlText = await response.text();
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(htmlText, 'text/html');
@@ -41,8 +51,22 @@
                 title = title.trim().substring(0, 100);
 
                 let description = doc.querySelector('meta[name="description"]')?.content ||
-                                 doc.querySelector('p')?.textContent || 'İçerik bulunamadı.';
-                description = description.trim().substring(0, 200) + (description.length > 200 ? '...' : '');
+                                 doc.querySelector('meta[property="og:description"]')?.content || '';
+
+                if (!description) {
+                    const paragraphs = doc.querySelectorAll('p');
+                    for (const p of paragraphs) {
+                        const text = p.textContent.trim();
+                        if (text.length > 10) {
+                            description = text;
+                            break;
+                        }
+                    }
+                }
+
+                if (!description) {
+                    description = 'Sayfada yeterli içerik bulunamadı. Daha fazla bilgi için sayfayı ziyaret edin.';
+                }
 
                 let image = doc.querySelector('meta[property="og:image"]')?.content ||
                            doc.querySelector('img')?.src ||
