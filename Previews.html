@@ -4,6 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PLC Ön İzleme Oluşturucu</title>
+    <style>
+        #copyButton {
+            margin-top: 10px;
+            padding: 5px 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            display: block; /* Butonun görünür olduğundan emin olmak için */
+        }
+        #copyButton:hover {
+            background-color: #45a049;
+        }
+        #output {
+            margin-bottom: 10px;
+        }
+    </style>
 </head>
 <body>
     <input type="text" id="linkInput" placeholder="Linki buraya girin">
@@ -33,17 +51,19 @@
             const existingButton = document.querySelector('#copyButton');
             if (existingButton) {
                 existingButton.remove();
+                console.log('Eski Kopyala butonu kaldırıldı.');
             }
         }
 
         function addCopyButton() {
             removeExistingCopyButton(); // Eski butonu kaldır
+            const outputDiv = document.getElementById('output');
             const copyButton = document.createElement('button');
             copyButton.id = 'copyButton';
             copyButton.textContent = 'Kopyala';
             copyButton.onclick = copyToClipboard;
-            copyButton.style.marginTop = '10px'; // Kod ile buton arasında biraz boşluk
-            document.body.appendChild(copyButton);
+            outputDiv.insertAdjacentElement('afterend', copyButton); // <pre>'nin hemen altına ekle
+            console.log('Kopyala butonu eklendi:', copyButton);
         }
 
         function copyToClipboard() {
@@ -57,6 +77,7 @@
 
             navigator.clipboard.writeText(textToCopy).then(() => {
                 alert('Kod panoya kopyalandı!');
+                console.log('Kod kopyalandı:', textToCopy);
             }).catch(err => {
                 console.error('Kopyalama başarısız:', err);
                 alert('Kopyalama başarısız. Lütfen kodu manuel olarak kopyalayın.');
