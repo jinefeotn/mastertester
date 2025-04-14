@@ -29,6 +29,40 @@
             }
         }
 
+        function removeExistingCopyButton() {
+            const existingButton = document.querySelector('#copyButton');
+            if (existingButton) {
+                existingButton.remove();
+            }
+        }
+
+        function addCopyButton() {
+            removeExistingCopyButton(); // Eski butonu kaldır
+            const copyButton = document.createElement('button');
+            copyButton.id = 'copyButton';
+            copyButton.textContent = 'Kopyala';
+            copyButton.onclick = copyToClipboard;
+            copyButton.style.marginTop = '10px'; // Kod ile buton arasında biraz boşluk
+            document.body.appendChild(copyButton);
+        }
+
+        function copyToClipboard() {
+            const outputDiv = document.getElementById('output');
+            const textToCopy = outputDiv.textContent.trim();
+
+            if (!textToCopy || textToCopy === 'Veri çekiliyor, lütfen bekleyin...' || textToCopy === 'Lütfen bir link girin.') {
+                alert('Kopyalanacak bir içerik yok. Lütfen önce "Oluştur" butonuna tıklayın.');
+                return;
+            }
+
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                alert('Kod panoya kopyalandı!');
+            }).catch(err => {
+                console.error('Kopyalama başarısız:', err);
+                alert('Kopyalama başarısız. Lütfen kodu manuel olarak kopyalayın.');
+            });
+        }
+
         async function generatePreview() {
             const link = document.getElementById('linkInput').value.trim();
             const outputDiv = document.getElementById('output');
@@ -36,10 +70,12 @@
 
             if (!link) {
                 outputDiv.textContent = 'Lütfen bir link girin.';
+                removeExistingCopyButton(); // Butonu kaldır
                 return;
             }
 
             outputDiv.textContent = 'Veri çekiliyor, lütfen bekleyin...';
+            removeExistingCopyButton(); // Butonu kaldır
 
             try {
                 const response = await fetchWithRetry(`https://api.allorigins.win/raw?url=${encodeURIComponent(link)}`);
@@ -77,10 +113,12 @@
 
                 const previewHtml = `<div class="preview-container" onclick="window.open('${link}', '_blank')">\n    <div class="preview-box">\n        <img src="${image}" alt="PLC Image">\n        <h4>${title}</h4>\n        <p class="preview-text">${description}</p>\n    </div>\n</div>`;
                 outputDiv.textContent = previewHtml;
+                addCopyButton(); // Kod oluşturulduysa butonu ekle
             } catch (error) {
                 console.error(`Hata: ${link} işlenemedi`, error);
                 const errorHtml = `<div class="preview-container" onclick="window.open('${link}', '_blank')">\n    <div class="preview-box">\n        <img src="${defaultImage}" alt="PLC Image">\n        <h4>Veri Çekilemedi</h4>\n        <p class="preview-text">Linkten içerik alınamadı. Sayfayı ziyaret etmek için tıklayın...</p>\n    </div>\n</div>`;
                 outputDiv.textContent = errorHtml;
+                addCopyButton(); // Hata durumunda da butonu ekle
             }
         }
     </script>
