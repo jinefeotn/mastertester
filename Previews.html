@@ -1,210 +1,170 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PLC Master Akademi Previews</title>
-</head>
-<body>
-    <div class="genel-guide">
-        <style scoped>
-            body {
-                margin: 0;
-                padding: 0;
-            }
-            .genel-guide {
-                font-family: Arial, sans-serif;
-                line-height: 1.6;
-                color: #333;
-                max-width: 800px; /* Blogger için daraltıldı */
-                margin: 0 auto;
-                padding: 10px;
-            }
-            .genel-guide p {
-                margin: 10px 0;
-                text-align: justify;
-            }
-            .genel-guide .preview-grid {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 10px;
-                justify-content: center; /* Kutuları ortala */
-                width: 100%;
-            }
-            .genel-guide .preview-container {
-                width: 225px;
-                height: 300px;
-                border: 1px solid #e0e0e0;
-                border-radius: 8px;
-                overflow: hidden;
-                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-                background-color: #fff;
-                transition: all 0.3s ease;
-                flex: 0 0 225px;
-                cursor: pointer;
-            }
-            .genel-guide .preview-container:hover {
-                box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-            }
-            .genel-guide .preview-box {
-                padding: 10px;
-                display: flex;
-                flex-direction: column;
-                height: 100%;
-            }
-            .genel-guide .preview-box img {
-                max-width: 100%;
-                height: 120px;
-                object-fit: cover;
-                margin-bottom: 10px;
-            }
-            .genel-guide .preview-box h4 {
-                margin: 0 0 8px 0;
-                font-size: 16px;
-                color: #333;
-                font-weight: 600;
-                white-space: normal;
-                line-height: 1.2;
-                max-height: 60px;
-                overflow: hidden;
-                text-align: center;
-            }
-            .genel-guide .preview-text {
-                font-size: 13px;
-                color: #666;
-                margin: 0 0 8px 0;
-                line-height: 1.3;
-                text-align: justify;
-                flex-grow: 1;
-                position: relative;
-                overflow: hidden;
-            }
-            .genel-guide .preview-text::after {
-                content: "";
-                position: absolute;
-                bottom: 0;
-                left: 0;
-                width: 100%;
-                height: 50px;
-                background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
-                pointer-events: none;
-            }
-            @media only screen and (max-width: 800px) {
-                .genel-guide {
-                    padding: 10px;
-                    max-width: 100%;
-                }
-                .genel-guide .preview-container {
-                    flex: 0 0 calc(50% - 5px);
-                    width: calc(50% - 5px);
-                }
-            }
-            @media only screen and (max-width: 500px) {
-                .genel-guide {
-                    padding: 5px;
-                }
-                .genel-guide .preview-container {
-                    width: 100%;
-                    flex: 0 0 100%;
-                    margin: 5px 0;
-                }
-                .genel-guide .preview-box h4 {
-                    font-size: 14px;
-                    max-height: 56px;
-                }
-                .genel-guide .preview-text {
-                    font-size: 12px;
-                    line-height: 1.2;
-                }
-                .genel-guide .preview-text::after {
-                    height: 40px;
-                }
-            }
-        </style>
-        <div class="separator" style="clear: both;">
-            <a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhVtku0OxPJIoKqWHv67iuaS5aUC5KlD3BJSFXdvLthF8X8S2AeqVagI3eORpyjLxIImRWCYvUst4sMVgopxqj9bM-sQIW4DFvt1hU8_xbRG5-blQUk6kPSxlVPpy8s2V1M2aSqeXX8PlChFn050F1Q4nEKNW3F7wNiGqVpneGR7ZOx-cI7ZsxLxU0IHunz/s1600/genelbilgilerplcmasterakademi.JPG" style="display: block; padding: 1em 0; text-align: center;">
-                <img alt="PLC programlama ve otomasyon öğrenin! Bit, sinyaller, PLC türleri ve TIA Portal rehberleriyle PLC Master Akademi'de bilgi edinin." border="0" data-original-height="832" data-original-width="1472" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhVtku0OxPJIoKqWHv67iuaS5aUC5KlD3BJSFXdvLthF8X8S2AeqVagI3eORpyjLxIImRWCYvUst4sMVgopxqj9bM-sQIW4DFvt1hU8_xbRG5-blQUk6kPSxlVPpy8s2V1M2aSqeXX8PlChFn050F1Q4nEKNW3F7wNiGqVpneGR7ZOx-cI7ZsxLxU0IHunz/s1600/genelbilgilerplcmasterakademi.JPG"/>
-            </a>
-        </div>
-        <p>PLC programlama ve endüstriyel otomasyon dünyasına dair temel bilgileri bu sayfada bulabilirsiniz. Aşağıda, rehber yazılarımızın otomatik oluşturulan özetlerini bulabilirsiniz.</p>
+<style scoped>
+    .genel-guide .preview-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center; /* Kutuları ortala */
+        width: 100%;
+    }
+    .genel-guide .preview-container {
+        width: 225px;
+        height: 300px;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        background-color: #fff;
+        transition: all 0.3s ease;
+        flex: 0 0 225px;
+        cursor: pointer;
+    }
+    .genel-guide .preview-container:hover {
+        box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    }
+    .genel-guide .preview-box {
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+    .genel-guide .preview-box img {
+        max-width: 100%;
+        height: 120px;
+        object-fit: cover;
+        margin-bottom: 10px;
+    }
+    .genel-guide .preview-box h4 {
+        margin: 0 0 8px 0;
+        font-size: 16px;
+        color: #333;
+        font-weight: 600;
+        white-space: normal;
+        line-height: 1.2;
+        max-height: 60px;
+        overflow: hidden;
+        text-align: center;
+    }
+    .genel-guide .preview-text {
+        font-size: 13px;
+        color: #666;
+        margin: 0 0 8px 0;
+        line-height: 1.3;
+        text-align: justify;
+        flex-grow: 1;
+        position: relative;
+        overflow: hidden;
+    }
+    .genel-guide .preview-text::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 50px;
+        background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
+        pointer-events: none;
+    }
+    /* Daha dar ekranlar için medya sorguları */
+    @media only screen and (max-width: 800px) {
+        .genel-guide .preview-container {
+            flex: 0 0 calc(50% - 5px);
+            width: calc(50% - 5px);
+        }
+    }
+    @media only screen and (max-width: 500px) {
+        .genel-guide .preview-container {
+            width: 100%;
+            flex: 0 0 100%;
+            margin: 5px 0;
+        }
+        .genel-guide .preview-box h4 {
+            font-size: 14px;
+            max-height: 56px;
+        }
+        .genel-guide .preview-text {
+            font-size: 12px;
+            line-height: 1.2;
+        }
+        .genel-guide .preview-text::after {
+            height: 40px;
+        }
+    }
+</style>
 
-        <div class="preview-grid" id="previewGrid"></div>
+<div class="preview-grid" id="previewGrid"></div>
 
-        <script>
-            // Linkleri buraya ekleyin
-            const links = [
-                "https://www.plcmasterakademi.com/2025/03/dijital-dunyadan-plc-programlamaya-bit.html",
-                "https://www.plcmasterakademi.com/2025/03/tia-portalda-fonksiyon-blok-fb-ile.html",
-                "https://www.plcmasterakademi.com/2025/03/dijital-sinyal-nedir.html",
-                "https://www.plcmasterakademi.com/2025/03/analog-sinyal-nedir-plc-sistemlerinde.html",
-                "https://www.plcmasterakademi.com/2025/03/plc-nedir.html"
-            ];
+<script>
+    // Linkleri buraya ekleyin
+    const links = [
+        "https://www.plcmasterakademi.com/2025/03/dijital-dunyadan-plc-programlamaya-bit.html",
+        "https://www.plcmasterakademi.com/2025/03/tia-portalda-fonksiyon-blok-fb-ile.html",
+        "https://www.plcmasterakademi.com/2025/03/dijital-sinyal-nedir.html",
+        "https://www.plcmasterakademi.com/2025/03/analog-sinyal-nedir-plc-sistemlerinde.html",
+        "https://www.plcmasterakademi.com/2025/03/plc-nedir.html"
+    ];
 
-            async function generatePreviews() {
-                const previewGrid = document.getElementById('previewGrid');
-                previewGrid.innerHTML = ''; // Önceki kutuları temizle
+    async function generatePreviews() {
+        const previewGrid = document.getElementById('previewGrid');
+        previewGrid.innerHTML = ''; // Önceki kutuları temizle
 
-                const defaultImage = 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhVtku0OxPJIoKqWHv67iuaS5aUC5KlD3BJSFXdvLthF8X8S2AeqVagI3eORpyjLxIImRWCYvUst4sMVgopxqj9bM-sQIW4DFvt1hU8_xbRG5-blQUk6kPSxlVPpy8s2V1M2aSqeXX8PlChFn050F1Q4nEKNW3F7wNiGqVpneGR7ZOx-cI7ZsxLxU0IHunz/s1600/genelbilgilerplcmasterakademi.JPG';
+        const defaultImage = 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhVtku0OxPJIoKqWHv67iuaS5aUC5KlD3BJSFXdvLthF8X8S2AeqVagI3eORpyjLxIImRWCYvUst4sMVgopxqj9bM-sQIW4DFvt1hU8_xbRG5-blQUk6kPSxlVPpy8s2V1M2aSqeXX8PlChFn050F1Q4nEKNW3F7wNiGqVpneGR7ZOx-cI7ZsxLxU0IHunz/s1600/genelbilgilerplcmasterakademi.JPG';
 
-                for (const link of links) {
-                    try {
-                        // Proxy üzerinden sayfa içeriğini çek
-                        const response = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(link)}`);
-                        const htmlText = await response.text();
-                        const parser = new DOMParser();
-                        const doc = parser.parseFromString(htmlText, 'text/html');
+        for (const link of links) {
+            try {
+                // Proxy üzerinden sayfa içeriğini çek
+                const response = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(link)}`);
+                const htmlText = await response.text();
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(htmlText, 'text/html');
 
-                        // Başlık: <title> veya ilk <h1>
-                        let title = doc.querySelector('title')?.textContent || doc.querySelector('h1')?.textContent || 'Başlık Bulunamadı';
-                        title = title.trim().substring(0, 100); // Başlık uzunluğunu sınırla
+                // Başlık: <title> veya ilk <h1>
+                let title = doc.querySelector('title')?.textContent || doc.querySelector('h1')?.textContent || 'Başlık Bulunamadı';
+                title = title.trim().substring(0, 100); // Başlık uzunluğunu sınırla
 
-                        // Özet: Meta description veya ilk <p>’den ilk 200 karakter
-                        let description = doc.querySelector('meta[name="description"]')?.content ||
-                                         doc.querySelector('p')?.textContent || 'İçerik bulunamadı.';
-                        description = description.trim().substring(0, 200) + (description.length > 200 ? '...' : '');
+                // Özet: Meta description veya ilk <p>’den ilk 200 karakter
+                let description = doc.querySelector('meta[name="description"]')?.content ||
+                                 doc.querySelector('p')?.textContent || 'İçerik bulunamadı.';
+                description = description.trim().substring(0, 200) + (description.length > 200 ? '...' : '');
 
-                        // Görsel: og:image veya ilk <img>
-                        let image = doc.querySelector('meta[property="og:image"]')?.content ||
-                                    doc.querySelector('img')?.src ||
-                                    defaultImage;
+                // Görsel: og:image veya ilk <img>
+                let image = doc.querySelector('meta[property="og:image"]')?.content ||
+                            doc.querySelector('img')?.src ||
+                            defaultImage;
 
-                        // HTML’yi güvenli hale getir (XSS önlemi)
-                        title = title.replace(/</g, '<').replace(/>/g, '>');
-                        description = description.replace(/</g, '<').replace(/>/g, '>');
+                // HTML’yi güvenli hale getir (XSS önlemi)
+                title = title.replace(/</g, '<').replace(/>/g, '>');
+                description = description.replace(/</g, '<').replace(/>/g, '>');
 
-                        // Ön izleme kutusu oluştur
-                        const previewContainer = document.createElement('div');
-                        previewContainer.className = 'preview-container';
-                        previewContainer.onclick = () => window.open(link, '_blank');
-                        previewContainer.innerHTML = `
-                            <div class="preview-box">
-                                <img src="${image}" alt="PLC Image">
-                                <h4>${title}</h4>
-                                <p class="preview-text">${description}</p>
-                            </div>
-                        `;
-                        previewGrid.appendChild(previewContainer);
-                    } catch (error) {
-                        console.error(`Hata: ${link} işlenemedi`, error);
-                        // Hata durumunda varsayılan kutu
-                        const previewContainer = document.createElement('div');
-                        previewContainer.className = 'preview-container';
-                        previewContainer.onclick = () => window.open(link, '_blank');
-                        previewContainer.innerHTML = `
-                            <div class="preview-box">
-                                <img src="${defaultImage}" alt="PLC Image">
-                                <h4>Veri Çekilemedi</h4>
-                                <p class="preview-text">Linkten içerik alınamadı. Sayfayı ziyaret etmek için tıklayın...</p>
-                            </div>
-                        `;
-                        previewGrid.appendChild(previewContainer);
-                    }
-                }
+                // Ön izleme kutusu oluştur
+                const previewContainer = document.createElement('div');
+                previewContainer.className = 'preview-container';
+                previewContainer.onclick = () => window.open(link, '_blank');
+                previewContainer.innerHTML = `
+                    <div class="preview-box">
+                        <img src="${image}" alt="PLC Image">
+                        <h4>${title}</h4>
+                        <p class="preview-text">${description}</p>
+                    </div>
+                `;
+                previewGrid.appendChild(previewContainer);
+            } catch (error) {
+                console.error(`Hata: ${link} işlenemedi`, error);
+                // Hata durumunda varsayılan kutu
+                const previewContainer = document.createElement('div');
+                previewContainer.className = 'preview-container';
+                previewContainer.onclick = () => window.open(link, '_blank');
+                previewContainer.innerHTML = `
+                    <div class="preview-box">
+                        <img src="${defaultImage}" alt="PLC Image">
+                        <h4>Veri Çekilemedi</h4>
+                        <p class="preview-text">Linkten içerik alınamadı. Sayfayı ziyaret etmek için tıklayın...</p>
+                    </div>
+                `;
+                previewGrid.appendChild(previewContainer);
             }
+        }
+    }
 
-            // Sayfada otomatik çalıştır
-            window.onload = generatePreviews;
-        </script>
-    </div>
-</body>
-</html>
+    // Sayfada otomatik çalıştır
+    window.onload = generatePreviews;
+</script>
