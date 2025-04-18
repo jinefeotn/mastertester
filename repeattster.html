@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>TIA Portal SCL REPEAT UNTIL Döngüsü Simülasyonu | PLC Eğitimi</title>
+    <meta name="description" content="TIA Portal SCL REPEAT UNTIL döngüsü simülasyonu ile PLC programlamayı öğrenin! Başlangıç ve artış değerleriyle 50 kutuyu dolduran interaktif simülatör.">
+    <meta name="keywords" content="TIA Portal, SCL REPEAT UNTIL, PLC programlama, REPEAT döngüsü, SCL simülasyon, PLC eğitimi, Siemens otomasyon, REPEAT loop simulation, SCL tutorial">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .tia-languages {
+            font-family: 'Helvetica', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+            padding: 20px;
+        }
+        .tia-languages h4 {
+            font-size: 22px;
+            color: #2a4d69;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #d1d9e0;
+            padding-bottom: 5px;
+        }
+        .tia-languages h5 {
+            font-size: 18px;
+            color: #2a4d69;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #d1d9e0;
+            padding-bottom: 5px;
+        }
+        .tia-languages p {
+            margin: 10px 0;
+            text-align: justify;
+            text-indent: 20px;
+        }
+        .tia-languages ul, .tia-languages ol {
+            margin: 10px 0 10px 25px;
+        }
+        .tia-languages ul {
+            list-style-type: disc;
+        }
+        .tia-languages ol {
+            list-style-type: decimal;
+        }
+        .tia-languages ul li, .tia-languages ol li {
+            text-align: justify;
+            margin-bottom: 8px;
+        }
+        .tia-languages a {
+            color: #555;
+            text-decoration: none;
+        }
+        .tia-languages a:hover {
+            color: #333;
+            text-decoration: underline;
+        }
+        .tia-languages b {
+            color: #2a4d69;
+            font-weight: bold;
+        }
+        .tia-languages pre {
+            background-color: #f4f4f4;
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin: 10px 0;
+            overflow-x: auto;
+        }
+        .tia-languages code {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+        }
+        .tia-languages .input-group {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .tia-languages .input-group input {
+            padding: 10px;
+            font-size: 16px;
+            width: 80px;
+            text-align: center;
+            margin: 5px;
+        }
+        .tia-languages .input-group button {
+            padding: 10px 20px;
+            margin-left: 10px;
+            background-color: #007BFF;
+            border: none;
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .tia-languages .grid-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* 3 sütunlu grid */
+            gap: 5px;
+            padding: 10px;
+            border: 2px solid #d1d9e0;
+            background-color: #f9f9f9;
+            width: 100%;
+            box-sizing: border-box;
+            max-width: 100%;
+        }
+        .tia-languages .grid-box {
+            border: 1px solid #d1d9e0;
+            padding: 5px;
+            text-align: center;
+            background-color: #fff;
+            min-width: 50px;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        .tia-languages .filled {
+            background-color: #00ff00;
+            color: #000;
+        }
+        .tia-languages .status {
+            text-align: center;
+            font-weight: bold;
+            color: #444;
+            margin-top: 10px;
+        }
+        .tia-languages .highlight {
+            background-color: #e0e0e0;
+            color: #000;
+        }
+        @media only screen and (max-width: 600px) {
+            .tia-languages {
+                padding: 10px;
+            }
+            .tia-languages h4 {
+                font-size: 18px;
+            }
+            .tia-languages h5 {
+                font-size: 16px;
+            }
+            .tia-languages p {
+                font-size: 14px;
+                text-indent: 15px;
+            }
+            .tia-languages ul, .tia-languages ol {
+                padding-left: 15px;
+            }
+            .tia-languages li {
+                font-size: 14px;
+            }
+            .tia-languages pre {
+                font-size: 12px;
+            }
+            .tia-languages .input-group input, .tia-languages .input-group button {
+                font-size: 14px;
+                padding: 8px;
+                width: 70px;
+            }
+            .tia-languages .grid-container {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .tia-languages .grid-box {
+                min-width: 30px;
+                min-height: 30px;
+                font-size: 12px;
+                padding: 3px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+
+    <pre><code>REPEAT
+    "Kutular"[#Sayac] := #CurrentValue;
+    #CurrentValue := #CurrentValue + #Artis;
+    #Sayac := #Sayac + 1;
+UNTIL #CurrentValue > 50
+END_REPEAT;
+</code></pre>
+
+    <div class="input-group">
+        <label>Başlangıç:</label>
+        <input type="number" id="startValue" min="0" max="50" value="2">
+        <label>Kaç Arttır:</label>
+        <input type="number" id="stepValue" min="1" max="50" value="3">
+        <button onclick="runRepeatUntilLoop()">Başla</button>
+    </div>
+    <div class="status" id="status">Durum: Hazır</div>
+
+    <div class="grid-container" id="gridContainer">
+        <!-- 50 kutu dinamik olarak oluşturulacak -->
+    </div>
+
+   
+    <script>
+        // Sayfa yüklendiğinde gridi oluştur
+        window.onload = function() {
+            const gridContainer = document.getElementById("gridContainer");
+            const status = document.getElementById("status");
+
+            // 50 kutu oluştur
+            for (let i = 0; i < 50; i++) {
+                const box = document.createElement("div");
+                box.className = "grid-box";
+                box.id = "box" + i;
+                box.textContent = "0";
+                gridContainer.appendChild(box);
+                console.log("Kutu oluşturuldu: box" + i); // Hata ayıklama
+            }
+
+            status.innerText = "Durum: Hazır";
+        };
+
+        function runRepeatUntilLoop() {
+            const start = parseInt(document.getElementById("startValue").value);
+            const step = parseInt(document.getElementById("stepValue").value);
+            const status = document.getElementById("status");
+            let counter = 0; // Sayac başlangıçta 0
+
+            // Hata kontrolü
+            if (isNaN(start) || isNaN(step) || start < 0 || start > 50 || step <= 0 || step > 50) {
+                status.innerText = "Hata: Geçersiz değerler! (Başlangıç: 0-50, Artış: 1-50)";
+                status.style.color = "red";
+                return;
+            }
+
+            status.innerText = "Durum: Döngü Çalışıyor...";
+            status.style.color = "#444";
+
+            // Tüm kutuları sıfırla (beyaz yap)
+            for (let i = 0; i < 50; i++) {
+                const box = document.getElementById("box" + i);
+                if (box) {
+                    box.textContent = "0";
+                    box.classList.remove("filled");
+                }
+            }
+
+            // REPEAT … UNTIL döngüsünü simüle et
+            let currentValue = start;
+            do {
+                // Kod satırlarını vurgula
+                document.getElementById("box" + counter).classList.add("highlight");
+
+                const box = document.getElementById("box" + counter);
+                if (box && currentValue <= 50) {
+                    box.textContent = currentValue; // Değeri güncelle
+                    box.classList.add("filled"); // Yeşil renkle doldur
+                    status.innerText = `Durum: Kutu ${counter} Dolduruldu (Değer: ${currentValue})`;
+
+                    // Görsellik için kısa gecikme
+                    setTimeout(() => {
+                        document.getElementById("box" + counter).classList.remove("highlight");
+                    }, 500);
+                }
+
+                currentValue += step;
+                counter += 1;
+
+                // Her adımda biraz bekle
+                setTimeout(() => {}, 1000); // 1 saniye bekleme
+            } while (currentValue <= 50 && counter < 50);
+
+            // Döngü bittiğinde
+            status.innerText = "Durum: Döngü Tamamlandı";
+            status.style.color = "green";
+
+            // Durumu sıfırla
+            setTimeout(() => {
+                status.innerText = "Durum: Hazır";
+            }, 1000);
+        }
+    </script>
+
+</div>
+
+</body>
+</html>
