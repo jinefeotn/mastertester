@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>oglak Burcu - Bugünüm Nasıl Geçecek?</title>
+</head>
+<body>
+<div id="plc-test-container">
+    <h3 style="color: black;">Bugünüm Nasıl Geçecek?</h3>
+    <div id="gif-container">
+        <img id="fortune-image" src="https://i.hizliresim.com/4qiimxx.png" alt="Fortune Image" style="display: block;" onload="handleImageLoad()" onerror="handleImageError()">
+        <img id="fortune-gif" src="https://raw.githubusercontent.com/jinefeotn/plc-master-akademi-previews/9b5e4bee90e21665270f22da6536463bfbd18c8f/sanscak.gif" alt="Fortune Teller GIF" style="display: none;" onload="handleGifLoad()" onerror="handleGifError()">
+    </div>
+    <button id="spin-button" onclick="startAnimation()">Yorumla</button>
+    <div id="result"></div>
+</div>
+
+<style>
+    #plc-test-container {
+        text-align: center !important;
+        padding: 20px !important;
+        border: 2px solid #4a90e2 !important;
+        border-radius: 8px !important;
+        max-width: 600px !important;
+        margin: 20px auto !important;
+        background: #f9f9f9 !important;
+    }
+    #gif-container {
+        width: 300px;
+        height: 300px;
+        margin: 0 auto;
+        position: relative;
+    }
+    #fortune-image, #fortune-gif {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+    button {
+        padding: 10px 20px !important;
+        background: #4a90e2 !important;
+        color: white !important;
+        border: none !important;
+        border-radius: 5px !important;
+        cursor: pointer !important;
+        margin-top: 15px !important;
+        margin-right: 10px !important;
+    }
+    button:hover {
+        background: #357abd !important;
+    }
+    button:disabled {
+        background: #cccccc !important;
+        cursor: not-allowed !important;
+    }
+    #result {
+        margin-top: 20px;
+        font-size: 16px;
+        text-align: center;
+        max-width: 400px;
+        line-height: 1.5;
+        color: black;
+        margin: 15px auto;
+        padding: 15px;
+        background: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+</style>
+
+<script>
+    let comments = [];
+    let isAnimating = false;
+    const storageKey = `lastCommentTime_oglak_burcu`; // Sabit anahtar: oglak Burcu için
+    const COOLDOWN_TIME = 24 * 60 * 60 * 1000; // 24 saat (milisaniye cinsinden)
+    const jsonUrl = 'https://raw.githubusercontent.com/jinefeotn/sitemap/main/oglak_comments.json'; // oglak Burcu’na özel JSON
+
+    // Komik mesajlar dizisi
+    const funnyMessages = [
+        "Sabırlı ol, fal bakmak için yıldızların hizalanmasını bekliyoruz! 🌟",
+        "Kahin kahve molasında, biraz beklemen lazım! ☕",
+        "Dur bakalım, henüz 24 saat dolmadı! Falın soğumasını bekle! ❄️",
+        "Yıldızlar henüz hazır değil, biraz daha uyu! 😴",
+        "Falın pişiyor, ama daha fırında! Biraz daha bekle! 🍳",
+        "Kahin bugün tatilde, yarın tekrar gel! 🏖️",
+        "Fal bakmak için ayın doğru evresini beklemeliyiz! 🌙"
+    ];
+
+    // Son yorumlama zamanını kontrol et
+    function checkCommentCooldown() {
+        const lastCommentTime = localStorage.getItem(storageKey);
+        if (lastCommentTime) {
+            const currentTime = Date.now();
+            const timeDiff = currentTime - parseInt(lastCommentTime);
+            if (timeDiff < COOLDOWN_TIME) {
+                // 24 saat dolmadıysa butonu devre dışı bırak ve mesaj göster
+                document.getElementById('spin-button').disabled = true;
+                document.getElementById('result').textContent = 'Yorumlama için 24 saat beklemelisin! Tekrar Yorumla butonuna basarak eğlenebilirsin.';
+                return false;
+            } else {
+                // 24 saat geçtiyse, localStorage'ı sıfırla
+                localStorage.removeItem(storageKey);
+                return true;
+            }
+        }
+        return true; // İlk yorumlama ise devam et
+    }
+
+    // Rastgele komik mesaj göster
+    function showFunnyMessage() {
+        const randomIndex = Math.floor(Math.random() * funnyMessages.length);
+        document.getElementById('result').textContent = funnyMessages[randomIndex];
+    }
+
+    // JSON dosyasını GitHub'dan çek
+    document.getElementById('result').textContent = 'Yükleniyor...';
+    fetch(jsonUrl)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('JSON dosyası yüklenemedi: ' + response.statusText);
+            }
+            return response.json();
+        })
+        .then(data => {
+            comments = data.comments;
+            console.log("Yorumlar başarıyla yüklendi:", comments);
+            document.getElementById('result').textContent = 'Yorumla butonuna tıklayarak gününün nasıl geçeceğini öğren!';
+            if (!checkCommentCooldown()) {
+                document.getElementById('fortune-image').style.display = 'block';
+                document.getElementById('fortune-gif').style.display = 'none';
+            }
+        })
+        .catch(error => {
+            console.error('JSON yüklenirken hata:', error);
+            document.getElementById('result').textContent = 'Yorumlar yüklenemedi, lütfen tekrar deneyin.';
+        });
+
+    function startAnimation() {
+        if (comments.length === 0 || isAnimating) {
+            return;
+        }
+
+        isAnimating = true;
+        const spinButton = document.getElementById('spin-button');
+        spinButton.disabled = true;
+        document.getElementById('result').textContent = 'Yorumlanıyor...';
+
+        const image = document.getElementById('fortune-image');
+        const gif = document.getElementById('fortune-gif');
+        image.style.display = 'none';
+        gif.style.display = 'block';
+
+        const randomIndex = Math.floor(Math.random() * comments.length);
+        const selectedComment = comments[randomIndex];
+        typeWriterEffect(selectedComment.text, selectedComment.luckyNumber);
+
+        // Yorumlama zamanını localStorage'a kaydet
+        localStorage.setItem(storageKey, Date.now());
+    }
+
+    function typeWriterEffect(text, luckyNumber) {
+        const resultElement = document.getElementById('result');
+        resultElement.innerHTML = '';
+        let i = 0;
+        const speed = 50; // Her harf için milisaniye cinsinden hız
+
+        function type() {
+            if (i < text.length) {
+                resultElement.innerHTML = text.substring(0, i + 1);
+                i++;
+                setTimeout(type, speed);
+            } else {
+                resultElement.innerHTML = `${text}<br><strong>Günün Uğurlu Sayısı: ${luckyNumber}</strong>`;
+                resultElement.innerHTML += '<br><button onclick="resetAnimation()">Tekrar Yorumla</button>';
+                // Yorumlama bittikten sonra GIF'i gizle ve resmi geri göster
+                document.getElementById('fortune-gif').style.display = 'none';
+                document.getElementById('fortune-image').style.display = 'block';
+                isAnimating = false;
+                document.getElementById('spin-button').disabled = true; // Butonu devre dışı bırak
+            }
+        }
+
+        type();
+    }
+
+    function resetAnimation() {
+        if (checkCommentCooldown()) {
+            document.getElementById('result').innerHTML = 'Yorumla butonuna tıklayarak gününün nasıl geçeceğini öğren!';
+            document.getElementById('fortune-gif').style.display = 'none';
+            document.getElementById('fortune-image').style.display = 'block';
+            document.getElementById('spin-button').disabled = false;
+        } else {
+            showFunnyMessage();
+            document.getElementById('fortune-gif').style.display = 'none';
+            document.getElementById('fortune-image').style.display = 'block';
+        }
+    }
+
+    function handleGifLoad() {
+        console.log("GIF başarıyla yüklendi.");
+    }
+
+    function handleGifError() {
+        document.getElementById('result').textContent = 'GIF yüklenemedi, lütfen başka bir GIF URL’si kullanın veya internet bağlantınızı kontrol edin.';
+    }
+
+    function handleImageLoad() {
+        console.log("Resim başarıyla yüklendi.");
+    }
+
+    function handleImageError() {
+        document.getElementById('result').textContent = 'Resim yüklenemedi. Lütfen resmi başka bir platforma yükleyin (örneğin, GitHub) ve yeni URL’yi kullanın.';
+    }
+
+    // Sağ tıklamayı devre dışı bırak
+    document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+    });
+</script>
+</body>
+</html>
