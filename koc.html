@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bugünüm Nasıl Geçecek?</title>
+    <title>Koç Burcu - Bugünüm Nasıl Geçecek?</title>
 </head>
 <body>
 <div id="plc-test-container">
@@ -75,9 +75,9 @@
 <script>
     let comments = [];
     let isAnimating = false;
-    const currentPath = window.location.pathname; // Örnek: "/p/koc-burcu.html"
-    const storageKey = `lastCommentTime_${currentPath}`; // Sayfaya özel localStorage anahtarı
+    const storageKey = `lastCommentTime_koc_burcu`; // Sabit anahtar: Koç Burcu için
     const COOLDOWN_TIME = 24 * 60 * 60 * 1000; // 24 saat (milisaniye cinsinden)
+    const jsonUrl = 'https://raw.githubusercontent.com/jinefeotn/sitemap/main/koc_comments.json'; // Koç Burcu’na özel JSON
 
     // Komik mesajlar dizisi
     const funnyMessages = [
@@ -89,26 +89,6 @@
         "Kahin bugün tatilde, yarın tekrar gel! 🏖️",
         "Fal bakmak için ayın doğru evresini beklemeliyiz! 🌙"
     ];
-
-    // Burç ve JSON dosyası eşleştirmesi
-    const zodiacMap = {
-        '/p/koc-burcu.html': 'koc_comments.json',
-        '/p/boga-burcu.html': 'boga_comments.json',
-        '/p/koc-burcu.html': 'koc_comments.json',
-        '/p/yengec-burcu.html': 'yengec_comments.json',
-        '/p/aslan-burcu.html': 'aslan_comments.json',
-        '/p/basak-burcu.html': 'basak_comments.json',
-        '/p/terazi-burcu.html': 'terazi_comments.json',
-        '/p/akrep-burcu.html': 'akrep_comments.json',
-        '/p/yay-burcu.html': 'yay_comments.json',
-        '/p/oglak-burcu.html': 'oglak_comments.json',
-        '/p/kova-burcu.html': 'kova_comments.json',
-        '/p/balik-burcu.html': 'balik_comments.json'
-    };
-
-    // Sayfaya özel JSON dosyasını belirle
-    const jsonFile = zodiacMap[currentPath] || 'koc_comments.json'; // Varsayılan olarak İkizler
-    const jsonUrl = `https://raw.githubusercontent.com/jinefeotn/sitemap/main/${jsonFile}`;
 
     // Son yorumlama zamanını kontrol et
     function checkCommentCooldown() {
